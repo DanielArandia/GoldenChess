@@ -23,8 +23,6 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        // Lógica de comunicación con el cliente
-        // ...
 
         try {
             // Cerrar conexiones cuando sea necesario

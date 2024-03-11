@@ -11,7 +11,6 @@ public static void main(String[] args) {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                // Manejar la conexión con el cliente en un hilo separado
                 new Thread(new ClientHandler(clientSocket)).start();
             }
         } catch (IOException e) {

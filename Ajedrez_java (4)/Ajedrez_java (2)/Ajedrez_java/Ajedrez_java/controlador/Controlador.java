@@ -15,7 +15,7 @@ Verificar_movimiento verificar;
 
     public Controlador(Vista vista){
         this.vista = vista;
-        verificar = new Verificar_movimiento(vista);
+        verificar = new Verificar_movimiento(this);
 
         JButton[] botones = vista.getListaDeBotones();
         for (JButton boton : botones) {
@@ -36,8 +36,8 @@ Verificar_movimiento verificar;
         
     }
 
-    public void cambiarVista(){
-        
+    public void cambiarVista(String casillaOrigen, String casillaDestino){
+        vista.moverFicha(casillaOrigen, casillaDestino);
     }
   
 

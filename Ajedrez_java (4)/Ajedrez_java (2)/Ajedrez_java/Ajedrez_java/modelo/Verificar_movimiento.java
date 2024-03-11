@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import vista.Vista;
+import controlador.Controlador;
 
 
 public class Verificar_movimiento {
@@ -12,23 +12,27 @@ public class Verificar_movimiento {
     Map<String, String> diccionario;
     boolean agarrandoB;
     boolean agarrandoN;
-    Vista vista;
     String fichaSeleccionada;
     String numeroFichaSeleccionada;
     boolean turno1;
     ArrayList<Integer> nFichas;
     Integer nJugada;
+    Controlador controlador;
+    CrearDiccionario crearDiccionario;
     
 
-    public Verificar_movimiento(Vista vista){
+    public Verificar_movimiento(Controlador controlador){
 
         turno1 = true;
-        this.vista = vista;
+        this.controlador = controlador;;
         agarrandoB = false;
         agarrandoN = false;
         nJugada = 0;
         nFichas = new ArrayList<>();
         diccionario = new HashMap<>();
+        crearDiccionario = new CrearDiccionario(diccionario);
+
+        /* 
         diccionario.put("0", "Torre negra");
         diccionario.put("1", "Caballo negro");
         diccionario.put("2", "Alfil negro");
@@ -64,6 +68,7 @@ public class Verificar_movimiento {
         diccionario.put("61", "Alfil blanco");
         diccionario.put("62", "Caballo blanco");
         diccionario.put("63", "Torre blanca");
+        */
     }
     
     public void verificarMovimientos(String pieza){
@@ -139,7 +144,7 @@ public class Verificar_movimiento {
         if(agarrandoB == true && nFichas.contains(Integer.parseInt(clave))){
 
             
-            vista.moverFicha(numeroFichaSeleccionada, clave);
+            controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
             diccionario.put(numeroFichaSeleccionada,"Casilla");
 
@@ -149,7 +154,7 @@ public class Verificar_movimiento {
         }
         if(agarrandoN == true && nFichas.contains(Integer.parseInt(clave))){
             System.out.println("Entra");
-            vista.moverFicha(numeroFichaSeleccionada, clave);
+            controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
             diccionario.put(numeroFichaSeleccionada,"Casilla");
 
@@ -174,7 +179,7 @@ public class Verificar_movimiento {
             nMovimiento(valor, clave);
         }
         else if(agarrandoN == true && turno1 == false && nFichas.contains(Integer.parseInt(clave))){
-            vista.moverFicha(numeroFichaSeleccionada, clave);
+            controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
             diccionario.put(numeroFichaSeleccionada, "Casilla");
             agarrandoN = false;
@@ -197,7 +202,7 @@ public class Verificar_movimiento {
 
         }
         else if(agarrandoB == true && turno1 == true && nFichas.contains(Integer.parseInt(clave))){
-            vista.moverFicha(numeroFichaSeleccionada, clave);
+            controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
             diccionario.put(numeroFichaSeleccionada, "Casilla");
             agarrandoB = false;
