@@ -12,8 +12,17 @@ ObjectInputStream in;
     public Cliente(){
         try {
             Socket socket = new Socket("localhost", 49356);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            Thread streamThread = new Thread(() -> {
+                try {
+                    out = new ObjectOutputStream(socket.getOutputStream());
+                    in = new ObjectInputStream(socket.getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            streamThread.start();
+            // Esperar a que los flujos se inicialicen completamente
+            System.out.println("hola");
 
             // Lógica de comunicación con el servidor
             // ...
@@ -23,6 +32,8 @@ ObjectInputStream in;
         }
     }
     public void enviarMensajeAlServidor(String mensaje){
+
+        
 
         try {
             out.writeObject(mensaje);

@@ -8,20 +8,45 @@ import java.net.Socket;
 
 public class Servidor {
     public Servidor(){
-        try {
-            ServerSocket serverSocket = new ServerSocket(49356);
-            
+        Thread serverThread = new Thread(() -> {
+            try {
+                // Crear un ServerSocket que escuche en el puerto 12345
+                ServerSocket serverSocket = new ServerSocket(49356);
 
+                System.out.println("Esperando conexiones entrantes...");
 
-            while (true) {
-                System.out.println("antes de que se aceptara la conexion");
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("se aceptó la conexion");
-                new Thread(new ClientHandler(clientSocket)).start();
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Conexión aceptada desde: " + clientSocket.getInetAddress());
 
+                    // Crear un nuevo hilo para manejar la conexión del cliente
+                    Thread clientThread = new Thread(new ClientHandler(clientSocket));
+                    clientThread.start();
+                }
+                // Esperar y aceptar una conexión entrante
+
+                // Cerrar el ServerSocket
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
+        });
+
+        // Iniciar el hilo del servidor
+        serverThread.start();
+
+        // Continuar ejecutando otras líneas de código en el hilo principal
+        System.out.println("El servidor sigue ejecutando otras tareas mientras espera conexiones...");
+
+        // Por ejemplo, puedes agregar más código aquí que se ejecutará mientras el servidor espera conexiones
+
+        // También puedes esperar a que el hilo del servidor termine si es necesario
+        /*try {
+
+            serverThread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        */
+     
     }
 }
