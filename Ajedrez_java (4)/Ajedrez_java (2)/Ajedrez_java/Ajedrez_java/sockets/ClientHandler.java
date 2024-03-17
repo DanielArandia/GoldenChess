@@ -25,15 +25,39 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-
         try {
-            // Cerrar conexiones cuando sea necesario
-            Object obj = in.readObject();
-            if (obj instanceof String) {
-                String mensajeCliente = (String) obj;
-                System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+            while (true) {
+                // Esperar un nuevo mensaje del cliente
+                Object obj = in.readObject();
+                if (obj instanceof String) {
+                    String mensajeCliente = (String) obj;
+                    System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+                    
+                    // Aquí puedes procesar el mensaje recibido según tus necesidades
+
+                    // Ejemplo de envío de un mensaje de vuelta al cliente
+                    enviarMensajeAlCliente("Mensaje recibido: " + mensajeCliente);
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            // Cerrar conexiones al finalizar
+            try {
+                in.close();
+                out.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+    public void enviarMensajeAlCliente(String mensaje){
+        try {
+            out.writeObject(mensaje);
+            out.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
