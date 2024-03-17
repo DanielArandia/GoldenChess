@@ -1,6 +1,8 @@
 package sockets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -26,10 +28,12 @@ public class ClientHandler implements Runnable {
 
         try {
             // Cerrar conexiones cuando sea necesario
-            in.close();
-            out.close();
-            clientSocket.close();
-        } catch (IOException e) {
+            Object obj = in.readObject();
+            if (obj instanceof String) {
+                String mensajeCliente = (String) obj;
+                System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
+            }
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

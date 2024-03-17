@@ -6,14 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import modelo.Verificar_movimiento;
+import sockets.Cliente;
 import vista.Vista;
 
 public class Controlador implements ActionListener {
 
 Vista vista;
+Cliente cliente;
 Verificar_movimiento verificar;
 
-    public Controlador(Vista vista){
+    public Controlador(Vista vista, Cliente cliente){
+        this.cliente = cliente;
         this.vista = vista;
         verificar = new Verificar_movimiento(this);
 
@@ -21,6 +24,10 @@ Verificar_movimiento verificar;
         for (JButton boton : botones) {
             boton.addActionListener(this);
         }
+
+    }
+    public void enviarMensaje(String mensaje){
+        cliente.enviarMensajeAlServidor(mensaje);
 
     }
 
@@ -33,6 +40,8 @@ Verificar_movimiento verificar;
         System.out.println(botonPresionado.getName());
 
         verificar.verificarMovimientos(botonPresionado.getName());
+
+        enviarMensaje("hola");
         
     }
 

@@ -6,11 +6,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Cliente {
-public static void main(String[] args) {
+
+ObjectOutputStream out;
+ObjectInputStream in;
+    public Cliente(){
         try {
-            Socket socket = new Socket("localhost", 12345);
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            Socket socket = new Socket("localhost", 49356);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
 
             // Lógica de comunicación con el servidor
             // ...
@@ -18,5 +21,16 @@ public static void main(String[] args) {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void enviarMensajeAlServidor(String mensaje){
+
+        try {
+            out.writeObject(mensaje);
+            out.flush();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 }
