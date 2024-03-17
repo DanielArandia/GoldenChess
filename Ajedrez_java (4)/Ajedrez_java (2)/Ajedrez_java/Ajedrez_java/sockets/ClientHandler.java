@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class ClientHandler implements Runnable {
 
-     private Socket clientSocket;
+    private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
@@ -54,7 +54,9 @@ public class ClientHandler implements Runnable {
         
     }
     public void enviarMensajeAlCliente(String mensaje){
+
         try {
+            
             out.writeObject(mensaje);
             out.flush();
         } catch (IOException e) {

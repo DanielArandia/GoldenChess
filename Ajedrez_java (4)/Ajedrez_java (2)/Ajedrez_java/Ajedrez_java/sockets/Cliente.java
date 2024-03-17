@@ -16,6 +16,7 @@ ObjectInputStream in;
                 try {
                     out = new ObjectOutputStream(socket.getOutputStream());
                     in = new ObjectInputStream(socket.getInputStream());
+                    recibirMensajesDelServidor();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -32,16 +33,28 @@ ObjectInputStream in;
         }
     }
     public void enviarMensajeAlServidor(String mensaje){
-
-        
-
         try {
             out.writeObject(mensaje);
             out.flush();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }       
+    }
+    public void recibirMensajesDelServidor() {
+        try {
+            while (true) {
+                System.out.println("El mensaje es recibido al cliente");
+                // Recibir el mensaje enviado por el servidor
+                Object mensaje = in.readObject();
+                if (mensaje instanceof String) {
+                    String mensajeString = (String) mensaje;
+                    // Imprimir el mensaje recibido en la consola del cliente
+                    System.out.println("Mensaje recibido del servidor: " + mensajeString);
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        
     }
 }
