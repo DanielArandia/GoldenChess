@@ -12,9 +12,11 @@ public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+    private Servidor servidor;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Servidor servidor) {
         this.clientSocket = socket;
+        this.servidor = servidor;
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
@@ -36,7 +38,7 @@ public class ClientHandler implements Runnable {
                     // Aquí puedes procesar el mensaje recibido según tus necesidades
 
                     // Ejemplo de envío de un mensaje de vuelta al cliente
-                    enviarMensajeAlCliente("Mensaje recibido: " + mensajeCliente);
+                    servidor.reenviarMensaje(mensajeCliente, this);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -55,8 +57,7 @@ public class ClientHandler implements Runnable {
     }
     public void enviarMensajeAlCliente(String mensaje){
 
-        try {
-            
+        try {           
             out.writeObject(mensaje);
             out.flush();
         } catch (IOException e) {

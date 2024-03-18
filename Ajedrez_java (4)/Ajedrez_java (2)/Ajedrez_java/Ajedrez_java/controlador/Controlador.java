@@ -15,10 +15,13 @@ Vista vista;
 Cliente cliente;
 Verificar_movimiento verificar;
 
-    public Controlador(Vista vista, Cliente cliente){
-        this.cliente = cliente;
-        this.vista = vista;
+
+
+    public Controlador(Vista vista){
+
+        this.vista = vista;     
         verificar = new Verificar_movimiento(this);
+        this.cliente = new Cliente(verificar);
 
         JButton[] botones = vista.getListaDeBotones();
         for (JButton boton : botones) {
@@ -41,7 +44,7 @@ Verificar_movimiento verificar;
 
         verificar.verificarMovimientos(botonPresionado.getName());
 
-        enviarMensaje("hola");
+        enviarMensaje(botonPresionado.getName());
         
     }
 

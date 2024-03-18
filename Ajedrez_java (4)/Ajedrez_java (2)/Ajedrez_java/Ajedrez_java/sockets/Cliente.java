@@ -5,11 +5,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import modelo.Verificar_movimiento;
+
 public class Cliente {
 
 ObjectOutputStream out;
 ObjectInputStream in;
-    public Cliente(){
+Verificar_movimiento verificar_movimiento;
+    public Cliente(Verificar_movimiento vMovimiento){
+
+        verificar_movimiento = vMovimiento;
         try {
             Socket socket = new Socket("localhost", 49356);
             Thread streamThread = new Thread(() -> {
@@ -44,13 +49,13 @@ ObjectInputStream in;
     public void recibirMensajesDelServidor() {
         try {
             while (true) {
-                System.out.println("El mensaje es recibido al cliente");
                 // Recibir el mensaje enviado por el servidor
                 Object mensaje = in.readObject();
                 if (mensaje instanceof String) {
                     String mensajeString = (String) mensaje;
                     // Imprimir el mensaje recibido en la consola del cliente
                     System.out.println("Mensaje recibido del servidor: " + mensajeString);
+                    verificar_movimiento.verificarMovimientos(mensajeString);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
