@@ -44,4 +44,25 @@ public class CrearDiccionario {
 
 
     }
+    public void crearPeones(Map<String, Boolean> diccionario){
+        diccionario.put("8", false);
+        diccionario.put("9", false);
+        diccionario.put("10", false);
+        diccionario.put("11", false);
+        diccionario.put("12", false);
+        diccionario.put("13", false);
+        diccionario.put("14", false);
+        diccionario.put("15", false);
+
+        diccionario.put("48", false);
+        diccionario.put("49", false);
+        diccionario.put("50", false);
+        diccionario.put("51", false);
+        diccionario.put("52", false);
+        diccionario.put("53", false);
+        diccionario.put("54", false);
+        diccionario.put("55", false);
+
+
+    }
 }

@@ -10,6 +10,7 @@ import controlador.Controlador;
 public class Verificar_movimiento {
     
     Map<String, String> diccionario;
+    Map<String, Boolean> peones;
     boolean agarrandoB;
     boolean agarrandoN;
     String fichaSeleccionada;
@@ -22,53 +23,19 @@ public class Verificar_movimiento {
     
 
     public Verificar_movimiento(Controlador controlador){
-
+  
         turno1 = true;
-        this.controlador = controlador;;
+        this.controlador = controlador;
         agarrandoB = false;
         agarrandoN = false;
         nJugada = 0;
         nFichas = new ArrayList<>();
         diccionario = new HashMap<>();
+        peones = new HashMap<>();
         crearDiccionario = new CrearDiccionario(diccionario);
+        crearDiccionario.crearPeones(peones);
+        
 
-        /* 
-        diccionario.put("0", "Torre negra");
-        diccionario.put("1", "Caballo negro");
-        diccionario.put("2", "Alfil negro");
-        diccionario.put("3", "Dama negra");
-        diccionario.put("4", "Rey negro");
-        diccionario.put("5", "Alfil negro");
-        diccionario.put("6", "Caballo negro");
-        diccionario.put("7", "Torre negra");
-        diccionario.put("8", "Peon negro");
-        diccionario.put("9", "Peon negro");
-        diccionario.put("10", "Peon negro");
-        diccionario.put("11", "Peon negro");
-        diccionario.put("12", "Peon negro");
-        diccionario.put("13", "Peon negro");
-        diccionario.put("14", "Peon negro");
-        diccionario.put("15", "Peon negro");
-        for(int i = 16; i <= 47; i++ ){
-            diccionario.put(""+i, "Casilla");
-        }
-        diccionario.put("48", "Peon blanco");
-        diccionario.put("49", "Peon blanco");
-        diccionario.put("50", "Peon blanco");
-        diccionario.put("51", "Peon blanco");
-        diccionario.put("52", "Peon blanco");
-        diccionario.put("53", "Peon blanco");
-        diccionario.put("54", "Peon blanco");
-        diccionario.put("55", "Peon blanco");
-        diccionario.put("56", "Torre blanca");
-        diccionario.put("57", "Caballo blanco");
-        diccionario.put("58", "Alfil blanco");
-        diccionario.put("59", "Dama blanca");
-        diccionario.put("60", "Rey blanco");
-        diccionario.put("61", "Alfil blanco");
-        diccionario.put("62", "Caballo blanco");
-        diccionario.put("63", "Torre blanca");
-        */
     }
     
     public void verificarMovimientos(String pieza){
@@ -143,6 +110,13 @@ public class Verificar_movimiento {
         }
         if(agarrandoB == true && nFichas.contains(Integer.parseInt(clave))){
 
+            if (peones.containsKey(numeroFichaSeleccionada)) {
+                if(fichaSeleccionada.equals("Peon blanco") && peones.get(numeroFichaSeleccionada) == false){
+
+                    peones.remove(numeroFichaSeleccionada);
+                    peones.put(clave, true);
+                }
+            }
             
             controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
@@ -153,6 +127,14 @@ public class Verificar_movimiento {
             nJugada ++;
         }
         if(agarrandoN == true && nFichas.contains(Integer.parseInt(clave))){
+
+            if(peones.containsKey(numeroFichaSeleccionada)){
+                if(fichaSeleccionada.equals("Peon negro") && peones.get(numeroFichaSeleccionada) == false){
+                    peones.remove(numeroFichaSeleccionada);
+                    peones.put(clave, true);
+                }
+            }
+            
             System.out.println("Entra");
             controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
@@ -179,6 +161,7 @@ public class Verificar_movimiento {
             nMovimiento(valor, clave);
         }
         else if(agarrandoN == true && turno1 == false && nFichas.contains(Integer.parseInt(clave))){
+
             controlador.cambiarVista(numeroFichaSeleccionada, clave);
             diccionario.put(clave, fichaSeleccionada);
             diccionario.put(numeroFichaSeleccionada, "Casilla");
@@ -271,9 +254,17 @@ public class Verificar_movimiento {
 
         }
         else if(value.equals("Peon blanco") || value.equals("Peon negro")){
-            
+            boolean contiene;
 
+            contiene = peones.containsKey(clave);
+            
             if(value.equals("Peon blanco")){
+                if(contiene){
+                    if(peones.get(clave) == false && contiene){
+                        nFichas.add(Integer.parseInt(clave)- 16);
+                    }
+                }
+                
                 if( (Integer.parseInt(clave) - 8) < 64 && (Integer.parseInt(clave) -8) > 0 && diccionario.get(""+(Integer.parseInt(clave) - 8)).equals("Casilla")){
                     nFichas.add(Integer.parseInt(clave) -8);
                 }
@@ -285,6 +276,12 @@ public class Verificar_movimiento {
                 }
             }
             if(value.equals("Peon negro")){
+                if(contiene){
+                    if(peones.get(clave) == false){
+                        nFichas.add(Integer.parseInt(clave) + 16);
+                    }
+                }
+                
                 if( (Integer.parseInt(clave) + 8) < 64 && (Integer.parseInt(clave) +8) > 0 && diccionario.get(""+(Integer.parseInt(clave) + 8)).equals("Casilla")){
                     nFichas.add(Integer.parseInt(clave) +8);
                 }
